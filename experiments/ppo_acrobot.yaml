@@ -1,0 +1,60 @@
+name: ppo_acrobot
+
+rl:
+  environment: Acrobot-v1
+  max_steps: 200000
+  ppo_epochs: 4
+  minibatch_size: 100
+  rollout_size: 100
+
+sweep:
+  seeds: 5
+
+  # Define reusable lists
+  step_size: &step_size [0.1]
+  invslopes: &invslopes [0.01, 0.1] #, 0.3] #, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.3] #, 0.5] # , 0.5, 0.9]
+
+  envelopes:
+    policy:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+    value:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes

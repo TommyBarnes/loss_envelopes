@@ -1,0 +1,40 @@
+name: supervised_ca
+epochs: 100
+
+dataset:
+  train_start: 0
+  train_size: 16512
+  train_batch_size: 129
+  val_start: 16512
+  val_size: 4128
+  val_batch_size: 129
+
+sweep:
+  seeds: 50
+  # Define reusable lists
+  step_size: &step_size [0.01, 0.1, 1.0]
+  invslopes: &invslopes [0.01, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.5, 0.9]
+
+  envelopes:
+    mse:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope:
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope:
+            loss_pct: *invslopes

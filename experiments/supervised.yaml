@@ -1,0 +1,51 @@
+name: supervised
+epochs: 20
+
+dataset:
+  train_start: 0
+  train_size: 55000
+  train_batch_size: 1000
+  val_start: 5000
+  val_size: 5000
+  val_batch_size: 1000
+
+sweep:
+  seeds: 3
+  # Define reusable lists
+  step_size: &step_size [0.01, 0.1, 1.0]
+  invslopes: &invslopes [0.01, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.5, 0.9]
+
+  envelopes:
+    classification:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: step
+        parameters:
+          T: 0.012
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope:
+            loss_pct: *invslopes
+      - shape: linear
+        parameters:
+          T: 0.012
+          invslope: 0.002
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope:
+            loss_pct: *invslopes
+      - shape: sigmoid
+        parameters:
+          T: 0.012
+          invslope: 0.002

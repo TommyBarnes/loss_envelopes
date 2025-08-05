@@ -1,0 +1,96 @@
+dataset:
+  drift:
+    amplitude: 1.0
+    enabled: true
+    frequency: 0.2
+    frequency_per_class: false
+    frequency_std: 1.0
+    phase_spread: 1.0
+    shift: 1.0
+    shift_spread: 1.0
+  train_batch_size: 50
+  train_size: 200
+  train_start: 0
+  val_batch_size: 1000
+  val_size: 2000
+  val_start: 1000
+epochs: 5
+evaluation: null
+name: vae_drift
+
+
+
+sweep:
+  seeds: 10
+  structure:
+    latent_dim: [2,16,128]
+
+  # Define reusable lists
+  step_size: &step_size [0.1]
+  invslopes: &invslopes [0.01, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.5, 0.9]
+
+  envelopes:
+    recon:
+      - shape: identity
+      # - shape: step
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5]
+          invslope: 
+            loss_pct: *invslopes
+      # - shape: sigmoid
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5]
+      #     invslope: 
+      #       loss_pct: *invslopes
+    prior:
+      - shape: identity
+      # - shape: step
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5, 0.9]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5, 0.9]
+          invslope: 
+            loss_pct: *invslopes
+      # - shape: sigmoid
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5, 0.9]
+      #     invslope: 
+      #       loss_pct: *invslopes
+    total:
+      - shape: identity
+      # - shape: step
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5]
+          invslope: 
+            loss_pct: *invslopes
+      # - shape: sigmoid
+      #   step_size: *step_size
+      #   parameters:
+      #     T:
+      #       loss_pct: [0.1, 0.5]
+      #     invslope: 
+      #       loss_pct: *invslopes

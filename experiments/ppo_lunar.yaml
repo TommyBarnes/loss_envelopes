@@ -1,0 +1,60 @@
+name: ppo_lunar2
+
+rl:
+  environment: LunarLander-v3
+  max_steps: 500000
+  ppo_epochs: 4
+  minibatch_size: 100
+  rollout_size: 500
+
+sweep:
+  seeds: 20
+
+  # Define reusable lists
+  step_size: &step_size [0.1]
+  invslopes: &invslopes [0.1, 0.3] #, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.3]
+
+  envelopes:
+    policy:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+    value:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: *thresholds
+          invslope: 
+            loss_pct: *invslopes

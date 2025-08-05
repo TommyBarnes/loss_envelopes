@@ -1,0 +1,85 @@
+name: vae_overparam
+epochs: 10
+
+dataset:
+  train_start: 0
+  train_size: 200
+  train_batch_size: 50
+  val_start: 1000
+  val_size: 2000
+  val_batch_size: 1000
+
+sweep:
+  seeds: 10
+  structure:
+    latent_dim: 8
+
+  # Define reusable lists
+  step_size: &step_size [0.1]
+  invslopes: &invslopes [0.01, 0.1, 0.3]
+  thresholds: &thresholds [0.1, 0.5, 0.9]
+
+  envelopes:
+    recon:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5]
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5]
+          invslope: 
+            loss_pct: *invslopes
+    prior:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5, 0.9]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5, 0.9]
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1, 0.5, 0.9]
+          invslope: 
+            loss_pct: *invslopes
+    total:
+      - shape: identity
+      - shape: step
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1]
+      - shape: linear
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1]
+          invslope: 
+            loss_pct: *invslopes
+      - shape: sigmoid
+        step_size: *step_size
+        parameters:
+          T:
+            loss_pct: [0.1]
+          invslope: 
+            loss_pct: *invslopes
