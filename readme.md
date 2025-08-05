@@ -41,6 +41,6 @@ Feel free to connect or cite this repo if you find it useful.
 
 ## License
 
-The paper text is © [Your Name], released for non-commercial academic use.
+The paper text is © Tommy Barnes, released for non-commercial academic use.
 
 MIT License
