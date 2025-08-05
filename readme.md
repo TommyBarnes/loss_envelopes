@@ -26,17 +26,17 @@ It is currently a preliminary draft to foster discussion. Feel free to reach out
 
 Brief overview of the code.
 
-run_ablation.py      # Entry point for running experiments
-envelopes/           # LAE implementation - drop this into your own project!
-analysis/            # Scripts to reproduce plots and metrics
-experiments/         # YAML configs for each experiment
-lae_paper.pdf        # The draft paper
-README.md            # This file
+run_ablation.py - Entry point for running experiments  
+envelopes/ - LAE implementation - drop this into your own project!  
+analysis/ - Scripts to reproduce plots and metrics  
+experiments/ - YAML configs for each experiment  
+lae_paper.pdf - The draft paper  
+README.md - This file  
 
 ## Author
 
 **Tommy Barnes**  
-Independent researcher
+Independent researcher   
 Feel free to connect or cite this repo if you find it useful.
 
 ## License
