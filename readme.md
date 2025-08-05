@@ -5,7 +5,8 @@ It includes code for all experiments, including supervised learning, unsupervise
 
 ## Overview
 
-Loss Attenuation Envelopes (LAEs) are a general-purpose method for improving optimization by downweighting low-loss samples during training.  
+Loss Attenuation Envelopes (LAEs) are a general-purpose method for improving optimization by downweighting low-loss samples during training.
+
 They act as a dynamic filter on gradient contributions, targeting low signal-to-noise ratio (SNR) samples or samples likely to lead to overfitting.
 
 Unlike task-specific techniques like free bits (for VAEs) or KL penalties (for PPO), LAEs apply to any per-sample loss and are easy to plug into existing training loops.
@@ -25,13 +26,12 @@ It is currently a preliminary draft to foster discussion. Feel free to reach out
 
 Brief overview of the code.
 
-smoothscale/
-├── run_ablation.py      # Entry point for running experiments
-├── envelopes/           # LAE implementation - drop this into your own project!
-├── analysis/            # Scripts to reproduce plots and metrics
-├── experiments/         # YAML configs for each experiment
-├── lae_paper.pdf        # The draft paper
-└── README.md            # This file
+run_ablation.py      # Entry point for running experiments
+envelopes/           # LAE implementation - drop this into your own project!
+analysis/            # Scripts to reproduce plots and metrics
+experiments/         # YAML configs for each experiment
+lae_paper.pdf        # The draft paper
+README.md            # This file
 
 ## Author
 
